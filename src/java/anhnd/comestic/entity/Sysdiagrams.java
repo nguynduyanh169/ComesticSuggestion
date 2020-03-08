@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,7 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anhnd
  */
 @Entity
-@Table(name = "sysdiagrams")
+@Table(name = "sysdiagrams", catalog = "AppropicateCosmetic", schema = "dbo", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"principal_id", "name"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Sysdiagrams.findAll", query = "SELECT s FROM Sysdiagrams s")
@@ -33,14 +35,14 @@ public class Sysdiagrams implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 128)
     private String name;
     @Basic(optional = false)
-    @Column(name = "principal_id")
+    @Column(name = "principal_id", nullable = false)
     private int principalId;
     @Id
     @Basic(optional = false)
-    @Column(name = "diagram_id")
+    @Column(name = "diagram_id", nullable = false)
     private Integer diagramId;
     @Column(name = "version")
     private Integer version;

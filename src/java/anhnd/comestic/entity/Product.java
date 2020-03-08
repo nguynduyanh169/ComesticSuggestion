@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anhnd
  */
 @Entity
-@Table(name = "Product")
+@Table(name = "Product", catalog = "AppropicateCosmetic", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
@@ -40,24 +40,24 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ProductId")
+    @Column(name = "ProductId", nullable = false, length = 50)
     private String productId;
-    @Column(name = "ProductName")
+    @Column(name = "ProductName", length = 255)
     private String productName;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "Price")
+    @Column(name = "Price", precision = 53)
     private Double price;
-    @Column(name = "ImageLink")
+    @Column(name = "ImageLink", length = 255)
     private String imageLink;
-    @Column(name = "ProductLink")
+    @Column(name = "ProductLink", length = 255)
     private String productLink;
-    @Column(name = "Detail")
+    @Column(name = "Detail", length = 255)
     private String detail;
-    @Column(name = "Origin")
+    @Column(name = "Origin", length = 255)
     private String origin;
-    @Column(name = "Volume")
+    @Column(name = "Volume", length = 255)
     private String volume;
-    @Column(name = "Brand")
+    @Column(name = "Brand", length = 255)
     private String brand;
     @JoinColumn(name = "CategoryId", referencedColumnName = "CategoryId")
     @ManyToOne
