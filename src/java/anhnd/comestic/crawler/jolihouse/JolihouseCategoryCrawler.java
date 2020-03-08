@@ -26,36 +26,36 @@ import javax.xml.stream.events.XMLEvent;
  *
  * @author anhnd
  */
-public class JolihouseCategoryCrawler extends BaseCrawler{
-    
+public class JolihouseCategoryCrawler extends BaseCrawler {
+
     public JolihouseCategoryCrawler(ServletContext servletContext) {
         super(servletContext);
     }
-    
+
     public Map<String, String> getCategories(String url) {
         BufferedReader reader = null;
         try {
             reader = getBufferedReaderForURL(url);
             String line = "";
-            String document = "";
+            String document = "<doc>";
             boolean isStart = false;
             boolean isFound = false;
-            while ((line = reader.readLine()) != null) {     
-                if(isStart && line.contains("</ul><ul class=\"ct-mobile\">")) {
+            while ((line = reader.readLine()) != null) {
+                if (isStart && line.contains("<a href=\"/trang-diem\">Trang Điểm</a>")) {
                     break;
                 }
-                if(isStart) {
-                    document += line.trim();  
+                if (isStart && !line.contains("<li class=\"level1\">") && !line.contains("</li>") && !line.contains("</ul>") && !line.contains("<li class=\"level0 level-top parent level_ico\">")) {
+                    document += line.trim();
                 }
-                if(isFound && line.contains("</a>")) {
+                if (isFound && line.contains("<li class=\"level1\">")) {
                     isStart = true;
                 }
-                if(line.contains("<a href=\"/cham-soc-da\">")) {
+                if (line.contains("<a href=\"/cham-soc-da\">")) {
                     isFound = true;
                 }
             }
             System.out.println(document);
-            return stAXParserForCategories(document);
+            return stAXParserForCategories(document + "</doc>");
         } catch (IOException ex) {
             Logger.getLogger(JolihouseCategoryCrawler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XMLStreamException ex) {
@@ -63,27 +63,32 @@ public class JolihouseCategoryCrawler extends BaseCrawler{
         }
         return null;
     }
-    
+
     public Map<String, String> stAXParserForCategories(String document) throws UnsupportedEncodingException, XMLStreamException {
         document = document.trim();
         XMLEventReader eventReader = parseStringToXMLEventReader(document);
         Map<String, String> categories = new HashMap<>();
-        while (eventReader.hasNext()) {    
-            System.out.println("XML" + eventReader.toString());
+        while (eventReader.hasNext()) {
             XMLEvent event = (XMLEvent) eventReader.next();
-            if(event.isStartElement()) {
+            if (event.isStartElement()) {
                 StartElement startElement = event.asStartElement();
                 String tagName = startElement.getName().getLocalPart();
-                if("a".equals(tagName)) {
+                if ("a".equals(tagName)) {
                     Attribute attributeHref = startElement.getAttributeByName(new QName("href"));
                     String link = "https://jolicosmetic.vn" + attributeHref.getValue();
                     event = (XMLEvent) eventReader.next();
-                    Characters characters = event.asCharacters();
-                    categories.put(link, characters.getData());
+                    if (event.isStartElement()) {
+                        event = (XMLEvent) eventReader.next();
+                        System.out.println(event.isCharacters() + "?");
+                        Characters characters = event.asCharacters();
+                        System.out.println(characters.getData() + "baobao");
+                        categories.put(link, characters.getData());
+                    }
+
                 }
             }
         }
         return categories;
     }
-    
+
 }
