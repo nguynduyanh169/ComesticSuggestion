@@ -6,6 +6,7 @@
 package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseCrawler;
+import anhnd.comestic.entity.Category;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -26,47 +27,60 @@ import javax.xml.stream.events.XMLEvent;
  *
  * @author anhnd
  */
-public class JolihouseCategoryCrawler extends BaseCrawler {
+public class JolihousePageCrawler extends BaseCrawler implements Runnable {
 
-    public JolihouseCategoryCrawler(ServletContext servletContext) {
+    private String url;
+    private String categoryName;
+    protected Category category = null;
+
+    public JolihousePageCrawler(String url, String categoryName, ServletContext servletContext) {
         super(servletContext);
+        this.url = url;
+        this.categoryName = categoryName;
     }
 
-    public Map<String, String> getCategories(String url) {
+    @Override
+    public void run() {
         BufferedReader reader = null;
         try {
             reader = getBufferedReaderForURL(url);
             String line = "";
-            String document = "<doc>";
-            boolean isStart = false;
+            String document = "";
             boolean isFound = false;
+            boolean isStart = false;
+            System.out.println(url);
             while ((line = reader.readLine()) != null) {
-                if (isStart && line.contains("<a href=\"/trang-diem\">Trang Điểm</a>")) {
+                if (isStart && line.trim().contains("<span class='hidden-sm hidden-xs call-count'>")) {
                     break;
                 }
-                if (isStart && !line.contains("<li class=\"level1\">") && !line.contains("</li>") && !line.contains("</ul>") && !line.contains("<li class=\"level0 level-top parent level_ico\">")) {
+                if (isStart) {
                     document += line.trim();
                 }
-                if (isFound && line.contains("<li class=\"level1\">")) {
+                if (isFound && line.trim().contains("<div class=\"product-box\">")) {
+                    System.out.println();
                     isStart = true;
                 }
-                if (line.contains("<a href=\"/cham-soc-da\">")) {
+                if (line.trim().contains("<div class=\"product-box\">")) {
                     isFound = true;
-                }
+                }              
             }
-            return stAXParserForCategories(document + "</doc>");
+            System.out.println(document + "doc");
+            Map<String, String> linkProducts = getProductHref(document);
+            for (Map.Entry<String, String> entry : linkProducts.entrySet()) {
+                System.out.println("Product Key: " + entry.getKey() + " Product Value: " + entry.getValue()); 
+           }
         } catch (IOException ex) {
-            Logger.getLogger(JolihouseCategoryCrawler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JolihousePageCrawler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XMLStreamException ex) {
-            Logger.getLogger(JolihouseCategoryCrawler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JolihousePageCrawler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+
     }
 
-    public Map<String, String> stAXParserForCategories(String document) throws UnsupportedEncodingException, XMLStreamException {
+    private Map<String, String> getProductHref(String document) throws UnsupportedEncodingException, XMLStreamException {
         document = document.trim();
         XMLEventReader eventReader = parseStringToXMLEventReader(document);
-        Map<String, String> categories = new HashMap<>();
+        Map<String, String> productHrefs = new HashMap<>();
         while (eventReader.hasNext()) {
             XMLEvent event = (XMLEvent) eventReader.next();
             if (event.isStartElement()) {
@@ -76,16 +90,12 @@ public class JolihouseCategoryCrawler extends BaseCrawler {
                     Attribute attributeHref = startElement.getAttributeByName(new QName("href"));
                     String link = "https://jolicosmetic.vn" + attributeHref.getValue();
                     Attribute attributeTitle = startElement.getAttributeByName(new QName("title"));
-                    event = (XMLEvent) eventReader.next();
-                    if (event.isStartElement()) {
-                        event = (XMLEvent) eventReader.next();
-                        Characters characters = event.asCharacters();
-                        categories.put(link, characters.getData());
-                    }
+                    String title = attributeTitle.getValue();
+                    productHrefs.put(link, title);
                 }
             }
         }
-        return categories;
+        return productHrefs;
     }
 
 }
