@@ -5,9 +5,7 @@
         <group>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/jolihouse/JolihouseCategoryCrawler.java</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/CrawlServlet.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/BaseCrawler.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/jolihouse/JolihousePageCrawler.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/BaseThread.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/jolihouse/JolihouseModelCrawler.java</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/jolihouse/JolihouseThread.java</file>
         </group>
     </open-files>

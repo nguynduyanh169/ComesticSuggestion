@@ -7,6 +7,7 @@ package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseCrawler;
 import anhnd.comestic.entity.Category;
+import anhnd.comestic.utils.XMLChecker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -45,30 +46,33 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
         try {
             reader = getBufferedReaderForURL(url);
             String line = "";
-            String document = "";
+            String document = "<doc>";
             boolean isFound = false;
             boolean isStart = false;
-            System.out.println(url);
             while ((line = reader.readLine()) != null) {
-                if (isStart && line.trim().contains("<span class='hidden-sm hidden-xs call-count'>")) {
+                if (isStart && line.trim().contains("<div class=\"text-right\">")) {
                     break;
                 }
                 if (isStart) {
-                    document += line.trim();
+                    if(!line.trim().contains("<a  title=\"Bỏ thích\" class=\"button_wh_40 btn_35_h iWishAdded "
+                            + "iwishAddWrapper iWishHidden\" href=\"javascript:;\"") && !line.trim().contains("<a title=\"Yêu thích\" class=\"button_wh_40 btn_35_h iWishAdd"
+                                    + " iwishAddWrapper\" href=\"javascript:;\"")){
+                        document += line.trim();
+                    }
                 }
-                if (isFound && line.trim().contains("<div class=\"product-box\">")) {
-                    System.out.println();
+                if (isFound && line.trim().contains("<div class=\"row\">")) {
                     isStart = true;
                 }
-                if (line.trim().contains("<div class=\"product-box\">")) {
+                if (line.trim().contains("<section class=\"main_container collection margin-bottom-30 col-md-9 col-lg-9 col-lg-push-3 col-md-push-3\">")) {
                     isFound = true;
-                }              
+                }
             }
-            System.out.println(document + "doc");
+            document = document + "</doc>";
             Map<String, String> linkProducts = getProductHref(document);
             for (Map.Entry<String, String> entry : linkProducts.entrySet()) {
-                System.out.println("Product Key: " + entry.getKey() + " Product Value: " + entry.getValue()); 
-           }
+                Thread thread = new Thread(new JolihouseModelCrawler(entry.getKey(), servletContext));
+                thread.run();
+            }
         } catch (IOException ex) {
             Logger.getLogger(JolihousePageCrawler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XMLStreamException ex) {
@@ -78,8 +82,9 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
     }
 
     private Map<String, String> getProductHref(String document) throws UnsupportedEncodingException, XMLStreamException {
-        document = document.trim();
-        XMLEventReader eventReader = parseStringToXMLEventReader(document);
+        XMLChecker checker = new XMLChecker();
+        String validDoc = checker.check(document);
+        XMLEventReader eventReader = parseStringToXMLEventReader(validDoc);
         Map<String, String> productHrefs = new HashMap<>();
         while (eventReader.hasNext()) {
             XMLEvent event = (XMLEvent) eventReader.next();
