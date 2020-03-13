@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -29,27 +31,32 @@ import javax.xml.stream.events.XMLEvent;
  *
  * @author anhnd
  */
-public class JolihouseModelCrawler extends BaseCrawler implements Runnable {
+public class JolihouseModelCrawler extends BaseCrawler {
 
     private String productUrl;
+    private String categoryName;
 
-    public JolihouseModelCrawler(String productUrl, ServletContext servletContext) {
+    public JolihouseModelCrawler(String productUrl, ServletContext servletContext, String categoryName) {
         super(servletContext);
         this.productUrl = productUrl;
+        this.categoryName = categoryName;
     }
 
-//    public Model getModel() {
-//        BufferedReader reader = null;
-//        Model model = null;
-//        try {
-//            reader = getBufferedReaderForURL(productUrl);
-//            String document = getModelDocument(reader);
-//            return stAXParserForModel(document);
-//        } catch (IOException | XMLStreamException ex) {
-//            ex.printStackTrace();
-//        }
-//        return model;
-//    }
+    public Model getModel() {
+        BufferedReader reader = null;
+        Model model = null;
+        try {
+            reader = getBufferedReaderForURL(productUrl);
+            String document = getModelDocument(reader);
+            model = stAXParserForModel(document);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (XMLStreamException ex) {
+            Logger.getLogger(JolihouseModelCrawler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return model;
+    }
+
     private String getModelDocument(BufferedReader reader) throws IOException {
         String line = "";
         String document = "<doc>";
@@ -82,19 +89,27 @@ public class JolihouseModelCrawler extends BaseCrawler implements Runnable {
         float price = 0;
         String imageLink = "";
         String productLink = "";
-        String detail = "";
         String origin = "";
         String volume = "";
         String validDoc = textUtils.refineHtml(document);
-        XMLEventReader eventReader = parseStringToXMLEventReader(validDoc);
-        name = getProductName(eventReader).trim();
-        price = getProductPrice(eventReader);
+        imageLink = getProductImageLink(parseStringToXMLEventReader(validDoc));
+        name = getProductName(parseStringToXMLEventReader(validDoc));
+        price = getProductPrice(parseStringToXMLEventReader(validDoc));
+        ArrayList<String> brandAndOrigin = getBrandAndOrigin(parseStringToXMLEventReader(validDoc));
+        if (brandAndOrigin.size() == 1) {
+            brand = "";
+            origin = brandAndOrigin.get(0).trim();
+        } else if (brandAndOrigin.size() == 0) {
+            brand = "";
+            origin = "";
+        } else {
+            brand = brandAndOrigin.get(0).trim();
+            origin = brandAndOrigin.get(1).trim();
+        }
         productLink = productUrl;
-        imageLink = getProductImageLink(eventReader);
-        System.out.println("Name: " + name);
-        System.out.println("Price: " + price);
-        System.out.println("ProductLink: " + productLink);
-        System.out.println("ImageLink: " + imageLink);
+        volume = getVolume(parseStringToXMLEventReader(validDoc)).trim();
+        category = categoryName;
+        model = new Model(brand, name, category, price, imageLink, productLink, name + " " + price, origin, volume);
         return model;
     }
 
@@ -161,35 +176,58 @@ public class JolihouseModelCrawler extends BaseCrawler implements Runnable {
             }
             if (event.isStartElement()) {
                 StartElement startElement = event.asStartElement();
-                if (ElementChecker.isElementWith(startElement, "div", "class", "col_large_full large-image")) {
-                    event = (XMLEvent) eventReader.next();
-                    startElement = event.asStartElement();
-                    String tag = startElement.getName().getLocalPart();
-                    System.out.println(tag + "abc");
-                    if ("a".equals(startElement.getName().getLocalPart())) {
-                        Attribute imgAttr = startElement.getAttributeByName(new QName("href"));
-                        imageLink = imgAttr.getValue();
-                    }
+                if (ElementChecker.isElementWith(startElement, "a", "class", "large_image_url checkurl")) {
+                    Attribute attribute = startElement.getAttributeByName(new QName("href"));
+                    imageLink = attribute.getValue();
+                    return imageLink;
                 }
             }
         }
         return imageLink;
     }
 
-    @Override
-    public void run() {
-        BufferedReader reader = null;
-        Model model = null;
-        try {
-            reader = getBufferedReaderForURL(productUrl);
-            String document = getModelDocument(reader);
-            //System.out.println(document);
-            model = stAXParserForModel(document);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (XMLStreamException ex) {
-            Logger.getLogger(JolihouseModelCrawler.class.getName()).log(Level.SEVERE, null, ex);
+    private ArrayList<String> getBrandAndOrigin(XMLEventReader eventReader) {
+        XMLEvent event = null;
+        ArrayList<String> list = new ArrayList<>();
+        while (eventReader.hasNext()) {
+            event = (XMLEvent) eventReader.next();
+            if (event.isCharacters()) {
+                Characters character = event.asCharacters();
+                if (character.getData().toLowerCase().contains("xuất xứ")) {
+                    String output = character.getData().substring(character.getData().indexOf(":") + 1);
+                    String[] data = output.split(",");
+                    if (data.length == 1) {
+                        list.add(data[0]);
+                    } else if (data.length == 0) {
+                        list.add("");
+                        list.add("");
+                    } else {
+                        list.add(data[0]);
+                        list.add(data[1]);
+                    }
+                    return list;
+                }
+            }
         }
+        return list;
+    }
+
+    private String getVolume(XMLEventReader eventReader) {
+        XMLEvent event = null;
+        String data = "";
+        while (eventReader.hasNext()) {
+            event = (XMLEvent) eventReader.next();
+            if (event.isCharacters()) {
+                Characters characters = event.asCharacters();
+                if (characters.getData().toLowerCase().contains("dung tích") || characters.getData().toLowerCase().contains("trọng lượng")) {
+                    if (characters.getData() != null) {
+                        data = characters.getData().substring(characters.getData().indexOf(":") + 1);
+                        return data;
+                    }
+                }
+            }
+        }
+        return data;
     }
 
 }

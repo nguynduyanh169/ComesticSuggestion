@@ -29,7 +29,7 @@ public class DBUtils {
         synchronized (LOCK) {
             if (emf == null) {
                 try {
-                    emf = Persistence.createEntityManagerFactory("AppropriateCosmeticsPU");
+                    emf = Persistence.createEntityManagerFactory("Comestic");
                 } catch (Exception e) {
                     Logger.getLogger(DBUtils.class.getName()).log(Level.SEVERE, null, e);
                 }

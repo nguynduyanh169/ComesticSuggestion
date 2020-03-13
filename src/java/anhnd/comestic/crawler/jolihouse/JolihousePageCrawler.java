@@ -6,6 +6,8 @@
 package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseCrawler;
+import anhnd.comestic.dao.CategoryDAO;
+import anhnd.comestic.dto.Model;
 import anhnd.comestic.entity.Category;
 import anhnd.comestic.utils.XMLChecker;
 import java.io.BufferedReader;
@@ -32,7 +34,6 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
 
     private String url;
     private String categoryName;
-    protected Category category = null;
 
     public JolihousePageCrawler(String url, String categoryName, ServletContext servletContext) {
         super(servletContext);
@@ -70,8 +71,9 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
             document = document + "</doc>";
             Map<String, String> linkProducts = getProductHref(document);
             for (Map.Entry<String, String> entry : linkProducts.entrySet()) {
-                Thread thread = new Thread(new JolihouseModelCrawler(entry.getKey(), servletContext));
-                thread.run();
+                JolihouseModelCrawler modelCrawler = new JolihouseModelCrawler(entry.getKey(), servletContext, categoryName);
+                Model model = modelCrawler.getModel();
+                System.out.println(model.toString());
             }
         } catch (IOException ex) {
             Logger.getLogger(JolihousePageCrawler.class.getName()).log(Level.SEVERE, null, ex);

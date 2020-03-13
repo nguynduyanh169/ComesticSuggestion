@@ -6,6 +6,8 @@
 package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseThread;
+import anhnd.comestic.dao.CategoryDAO;
+import anhnd.comestic.entity.Category;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,6 +41,7 @@ public class JolihouseThread extends BaseThread implements Runnable {
                 JolihouseCategoryCrawler categoryCrawler = new JolihouseCategoryCrawler(context);
                 Map<String, String> categories = categoryCrawler.getCategories("https://jolicosmetic.vn/");
                 for (Map.Entry<String, String> entry : categories.entrySet()) {
+                    Category category = CategoryDAO.getInstance().saveCategoryWhileCrawl(entry.getValue());
                     JolihousePageCrawler jolihousePageCrawler = new JolihousePageCrawler(entry.getKey(), entry.getValue(), context);
                     Thread crawlingLinkProduct = new Thread(jolihousePageCrawler);
                     crawlingLinkProduct.start();
