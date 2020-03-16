@@ -59,15 +59,9 @@ public class Product implements Serializable {
     private String volume;
     @Column(name = "Brand", length = 255)
     private String brand;
-    @JoinColumn(name = "CategoryId", referencedColumnName = "CategoryId")
+    @JoinColumn(name = "SubCategoryId", referencedColumnName = "SubCategoryId")
     @ManyToOne
-    private Category categoryId;
-    @JoinColumn(name = "ConcernId", referencedColumnName = "ConcernId")
-    @ManyToOne
-    private Concern concernId;
-    @JoinColumn(name = "SkinTypeId", referencedColumnName = "SkinTypeId")
-    @ManyToOne
-    private SkinType skinTypeId;
+    private SubCategory subCategoryId;
 
     public Product() {
     }
@@ -148,28 +142,12 @@ public class Product implements Serializable {
         this.brand = brand;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public SubCategory getSubCategoryId() {
+        return subCategoryId;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Concern getConcernId() {
-        return concernId;
-    }
-
-    public void setConcernId(Concern concernId) {
-        this.concernId = concernId;
-    }
-
-    public SkinType getSkinTypeId() {
-        return skinTypeId;
-    }
-
-    public void setSkinTypeId(SkinType skinTypeId) {
-        this.skinTypeId = skinTypeId;
+    public void setSubCategoryId(SubCategory subCategoryId) {
+        this.subCategoryId = subCategoryId;
     }
 
     @Override

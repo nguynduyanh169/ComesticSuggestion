@@ -6,10 +6,17 @@
 package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseCrawler;
+import anhnd.comestic.dto.CategoryDTO;
+import anhnd.comestic.dto.SubCategoryDTO;
+import anhnd.comestic.entity.Category;
+import anhnd.comestic.utils.ElementChecker;
+import anhnd.comestic.utils.TextUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,29 +39,12 @@ public class JolihouseCategoryCrawler extends BaseCrawler {
         super(servletContext);
     }
 
-    public Map<String, String> getCategories(String url) {
+    public Map<String,String> getCategories(String url) {
         BufferedReader reader = null;
         try {
             reader = getBufferedReaderForURL(url);
-            String line = "";
-            String document = "<doc>";
-            boolean isStart = false;
-            boolean isFound = false;
-            while ((line = reader.readLine()) != null) {
-                if (isStart && line.contains("<a href=\"/trang-diem\">Trang Điểm</a>")) {
-                    break;
-                }
-                if (isStart && !line.contains("<li class=\"level1\">") && !line.contains("</li>") && !line.contains("</ul>") && !line.contains("<li class=\"level0 level-top parent level_ico\">")) {
-                    document += line.trim();
-                }
-                if (isFound && line.contains("<li class=\"level1\">")) {
-                    isStart = true;
-                }
-                if (line.contains("<a href=\"/cham-soc-da\">")) {
-                    isFound = true;
-                }
-            }
-            return stAXParserForCategories(document + "</doc>");
+            String document = getModelDocument(reader);
+            return stAXParserForCategories(document);
         } catch (IOException ex) {
             Logger.getLogger(JolihouseCategoryCrawler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XMLStreamException ex) {
@@ -63,29 +53,65 @@ public class JolihouseCategoryCrawler extends BaseCrawler {
         return null;
     }
 
+    private String getModelDocument(BufferedReader bufferedReader) throws IOException {
+        String line = "";
+        String document = "<doc>";
+        boolean isStart = false;
+        boolean isFound = false;
+        while ((line = bufferedReader.readLine()) != null) {
+            if (isStart && line.contains("</nav>")) {
+                break;
+            }
+            if (isStart) {
+                document += line.trim();
+            }
+            if (isFound && line.contains("<nav class=\"header-nav\">")) {
+                isStart = true;
+            }
+            if (line.contains("<div class=\"container relative\">")) {
+                isFound = true;
+            }
+        }
+        return document + "</doc>";
+    }
+
     public Map<String, String> stAXParserForCategories(String document) throws UnsupportedEncodingException, XMLStreamException {
         document = document.trim();
-        XMLEventReader eventReader = parseStringToXMLEventReader(document);
-        Map<String, String> categories = new HashMap<>();
+        Map<String, String> category = new HashMap<>();
+        String validDoc = TextUtils.refineHtml(document);
+        category = getCategory(parseStringToXMLEventReader(validDoc));
+        category.remove("/", "Trang chủ");
+        return category;
+    }
+
+    public Map<String, String> getCategory(XMLEventReader eventReader) {
+        XMLEvent event = null;
+        Map<String, String> categoryName = new HashMap<>();
         while (eventReader.hasNext()) {
-            XMLEvent event = (XMLEvent) eventReader.next();
+            try {
+                event = (XMLEvent) eventReader.next();
+            } catch (Exception e) {
+                e.printStackTrace();
+                break;
+            }
             if (event.isStartElement()) {
                 StartElement startElement = event.asStartElement();
-                String tagName = startElement.getName().getLocalPart();
-                if ("a".equals(tagName)) {
-                    Attribute attributeHref = startElement.getAttributeByName(new QName("href"));
-                    String link = "https://jolicosmetic.vn" + attributeHref.getValue();
-                    Attribute attributeTitle = startElement.getAttributeByName(new QName("title"));
+                if (ElementChecker.isElementWith(startElement, "a", "class", "a-img")) {
+                    Attribute hrefAttr = startElement.getAttributeByName(new QName("href"));
+                    String link = hrefAttr.getValue();
                     event = (XMLEvent) eventReader.next();
-                    if (event.isStartElement()) {
-                        event = (XMLEvent) eventReader.next();
-                        Characters characters = event.asCharacters();
-                        categories.put(link, characters.getData());
+                    startElement = event.asStartElement();
+                    if("span".equals(startElement.getName().getLocalPart())){
+                        XMLEvent value = (XMLEvent) eventReader.next();
+                        String categoryN = value.asCharacters().getData();
+                        categoryName.put(link,categoryN);
                     }
                 }
             }
         }
-        return categories;
+        return categoryName;
     }
+
+    
 
 }

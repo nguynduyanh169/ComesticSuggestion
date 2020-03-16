@@ -110,6 +110,9 @@ public class Model implements Serializable{
     public String toString() {
         return "Model{" + "brand=" + brand + ", name=" + name + ", category=" + category + ", price=" + price + ", imageLink=" + imageLink + ", productLink=" + productLink + ", detail=" + detail + ", origin=" + origin + ", volume=" + volume + '}';
     }
+
+   
+    
     
     
 }

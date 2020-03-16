@@ -7,6 +7,7 @@ package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseThread;
 import anhnd.comestic.dao.CategoryDAO;
+import anhnd.comestic.dto.CategoryDTO;
 import anhnd.comestic.entity.Category;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -41,15 +43,9 @@ public class JolihouseThread extends BaseThread implements Runnable {
                 JolihouseCategoryCrawler categoryCrawler = new JolihouseCategoryCrawler(context);
                 Map<String, String> categories = categoryCrawler.getCategories("https://jolicosmetic.vn/");
                 for (Map.Entry<String, String> entry : categories.entrySet()) {
-                    Category category = CategoryDAO.getInstance().saveCategoryWhileCrawl(entry.getValue());
-                    JolihousePageCrawler jolihousePageCrawler = new JolihousePageCrawler(entry.getKey(), entry.getValue(), context);
-                    Thread crawlingLinkProduct = new Thread(jolihousePageCrawler);
-                    crawlingLinkProduct.start();
-                    synchronized (BaseThread.getInstance()) {
-                        while (BaseThread.isSuspended()) {
-                            BaseThread.getInstance().wait();
-                        }
-                    }
+                    System.out.println(entry.getKey() + " " + entry.getValue());
+                    Thread subCategoryCrawler = new Thread(new JolihouseSubCategoryCrawler(context, entry.getKey(), entry.getValue()));
+                    subCategoryCrawler.start();
                 }
                 JolihouseThread.sleep(TimeUnit.DAYS.toMillis(1));
                 synchronized (BaseThread.getInstance()) {

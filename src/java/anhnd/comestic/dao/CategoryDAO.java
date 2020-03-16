@@ -6,6 +6,9 @@
 package anhnd.comestic.dao;
 
 import anhnd.comestic.entity.Category;
+import java.util.List;
+import javax.persistence.EntityManager;
+import anhnd.comestic.utils.DBUtils;
 import anhnd.comestic.utils.TextUtils;
 
 /**
@@ -29,10 +32,26 @@ public class CategoryDAO extends BaseDAO<Category> {
         return instance;
     }
     
-    public synchronized Category saveCategoryWhileCrawl(String categoryName) {
-        Category category = new Category();
-        category.setCategoryName(categoryName);
-        category.setCategoryId(TextUtils.getUUID());
-        return create(category);
+    public synchronized Category getAndInsertIfNewCategory(String name) {
+        EntityManager em = DBUtils.getEntityManager();
+        try {
+            List<Category> categorys = em.createNamedQuery("Category.findByCategoryName", Category.class)
+                    .setParameter("categoryName", name)
+                    .getResultList();
+            if (categorys != null && !categorys.isEmpty()) {
+                return categorys.get(0);
+            }
+            Category category = new Category();
+            category.setCategoryId(TextUtils.getUUID());
+            category.setCategoryName(name);
+            return create(category);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return null;
     }
 }

@@ -71,6 +71,7 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
             document = document + "</doc>";
             Map<String, String> linkProducts = getProductHref(document);
             for (Map.Entry<String, String> entry : linkProducts.entrySet()) {
+                //Category category = CategoryDAO.getInstance().getAndInsertIfNewCategory(categoryName);
                 JolihouseModelCrawler modelCrawler = new JolihouseModelCrawler(entry.getKey(), servletContext, categoryName);
                 Model model = modelCrawler.getModel();
                 System.out.println(model.toString());
