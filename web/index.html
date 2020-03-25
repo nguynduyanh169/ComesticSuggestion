@@ -1,19 +1,37 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <title>Sign In</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- STYLE CSS -->
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <div>TODO write content</div>
-        <form action="CrawlServlet" method="POST">
-            <input type="submit" value="CRAWL"/>
-        </form>
-    </body>
+        <div class="wrapper">
+            <div class="inner">
+                <div class="image-holder">
+                    <img src="images/registration-form-4.jpg" alt="">
+                </div>
+                <form action="LoginServlet" method="POST">
+                    <h3>Sign In</h3>
+                    <div class="form-holder">
+                        <input name="email" type="text" placeholder="e-mail" class="form-control">
+                    </div>
+                    <div class="form-holder">
+                        <input name="password" type="password" placeholder="Password" class="form-control" style="font-size: 15px;">
+                    </div>
+                    <div class="form-login">
+                        <button type="submit">Sign In</button>
+                        <br/>
+                        <p><a href="register.html">Sign up here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/main.js"></script>
+    </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

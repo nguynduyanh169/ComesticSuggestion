@@ -9,6 +9,7 @@
     <class>anhnd.comestic.entity.SkinType</class>
     <class>anhnd.comestic.entity.Product</class>
     <class>anhnd.comestic.entity.SubCategory</class>
+    <class>anhnd.comestic.entity.RecommendProduct</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=AppropicateCosmetic"/>

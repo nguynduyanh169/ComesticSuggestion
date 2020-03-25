@@ -15,14 +15,14 @@ public class Model implements Serializable{
     protected String brand;
     protected String name;
     protected String category;
-    protected float price;
+    protected double price;
     protected String imageLink;
     protected String productLink;
     protected String detail;
     protected String origin;
     protected String volume;
 
-    public Model(String brand, String name, String category, float price, String imageLink, String productLink, String detail, String origin, String volume) {
+    public Model(String brand, String name, String category, double price, String imageLink, String productLink, String detail, String origin, String volume) {
         this.brand = brand;
         this.name = name;
         this.category = category;
@@ -58,11 +58,11 @@ public class Model implements Serializable{
         this.category = category;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

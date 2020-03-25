@@ -72,4 +72,37 @@ public class TextUtils {
         return UUID.randomUUID().toString();
     }
     
+    public static String validateOrigin(String origin) {
+        String result = "";
+        if(origin.contains("Anh")) {
+            result = "Anh Quốc";
+        }
+        if(origin.contains("Bản") || origin.contains("Nhật")){
+            result = "Nhật Bản";
+        }
+        if(origin.contains("Pháp") || origin.contains("Paris")){
+            result = "Pháp";
+        }
+        if(origin.contains("Mĩ") || origin.contains("Mỹ") || origin.contains("U.S.A")){
+            result = "Mỹ";
+        }
+        if(origin.contains("Hàn Quốc")){
+            result = "Hàn Quốc";
+        }
+        if(origin.contains("Thái Lan")){
+            result = "Thái Lan";
+        }
+        return result;
+    }
+    
+    public static String validateBrand(String brand){
+        String result = "";
+        if(brand.contains(":")){
+            result = brand.replace(":", "").trim();
+        }else{
+            result = brand;
+        }
+        return result;
+    }
+    
 }

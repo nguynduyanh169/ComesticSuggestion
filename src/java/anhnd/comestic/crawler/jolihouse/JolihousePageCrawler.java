@@ -7,8 +7,12 @@ package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseCrawler;
 import anhnd.comestic.dao.CategoryDAO;
+import anhnd.comestic.dao.ProductDAO;
 import anhnd.comestic.dto.Model;
 import anhnd.comestic.entity.Category;
+import anhnd.comestic.entity.Product;
+import anhnd.comestic.entity.SubCategory;
+import anhnd.comestic.utils.TextUtils;
 import anhnd.comestic.utils.XMLChecker;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,12 +37,12 @@ import javax.xml.stream.events.XMLEvent;
 public class JolihousePageCrawler extends BaseCrawler implements Runnable {
 
     private String url;
-    private String categoryName;
+    private SubCategory subCategory;
 
-    public JolihousePageCrawler(String url, String categoryName, ServletContext servletContext) {
+    public JolihousePageCrawler(String url, SubCategory subCategory, ServletContext servletContext) {
         super(servletContext);
         this.url = url;
-        this.categoryName = categoryName;
+        this.subCategory = subCategory;
     }
 
     @Override
@@ -71,10 +75,13 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
             document = document + "</doc>";
             Map<String, String> linkProducts = getProductHref(document);
             for (Map.Entry<String, String> entry : linkProducts.entrySet()) {
-                //Category category = CategoryDAO.getInstance().getAndInsertIfNewCategory(categoryName);
-                JolihouseModelCrawler modelCrawler = new JolihouseModelCrawler(entry.getKey(), servletContext, categoryName);
+                JolihouseModelCrawler modelCrawler = new JolihouseModelCrawler(entry.getKey(), servletContext, subCategory.getSubCategoryName());
                 Model model = modelCrawler.getModel();
-                System.out.println(model.toString());
+                String origin = TextUtils.validateOrigin(model.getOrigin());
+                String brand = TextUtils.validateBrand(model.getBrand());
+                Product product = new Product(TextUtils.getUUID(), model.getName(), model.getPrice(), model.getImageLink(), model.getProductLink(), model.getDetail(), origin, model.getVolume(), brand, subCategory);
+                ProductDAO productDAO = new ProductDAO();
+                Product result = productDAO.getAndInsertIfNewProduct(product);
             }
         } catch (IOException ex) {
             Logger.getLogger(JolihousePageCrawler.class.getName()).log(Level.SEVERE, null, ex);

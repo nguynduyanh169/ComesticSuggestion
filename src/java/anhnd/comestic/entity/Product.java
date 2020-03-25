@@ -6,6 +6,7 @@
 package anhnd.comestic.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -35,6 +39,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Product.findByOrigin", query = "SELECT p FROM Product p WHERE p.origin = :origin")
     , @NamedQuery(name = "Product.findByVolume", query = "SELECT p FROM Product p WHERE p.volume = :volume")
     , @NamedQuery(name = "Product.findByBrand", query = "SELECT p FROM Product p WHERE p.brand = :brand")})
+@XmlType(name = "product", propOrder = {
+    "productId",
+    "productName",
+    "price",
+    "imageLink",
+    "productLink",
+    "detail",
+    "origin",
+    "volume",
+    "brand",
+    "subCategoryId"
+})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,6 +78,8 @@ public class Product implements Serializable {
     @JoinColumn(name = "SubCategoryId", referencedColumnName = "SubCategoryId")
     @ManyToOne
     private SubCategory subCategoryId;
+    @OneToMany(mappedBy = "productId")
+    private Collection<RecommendProduct> recommendProductCollection;
 
     public Product() {
     }
@@ -69,6 +87,21 @@ public class Product implements Serializable {
     public Product(String productId) {
         this.productId = productId;
     }
+
+    public Product(String productId, String productName, Double price, String imageLink, String productLink, String detail, String origin, String volume, String brand, SubCategory subCategoryId) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.imageLink = imageLink;
+        this.productLink = productLink;
+        this.detail = detail;
+        this.origin = origin;
+        this.volume = volume;
+        this.brand = brand;
+        this.subCategoryId = subCategoryId;
+    }
+
+    
 
     public String getProductId() {
         return productId;
@@ -148,6 +181,15 @@ public class Product implements Serializable {
 
     public void setSubCategoryId(SubCategory subCategoryId) {
         this.subCategoryId = subCategoryId;
+    }
+
+    @XmlTransient
+    public Collection<RecommendProduct> getRecommendProductCollection() {
+        return recommendProductCollection;
+    }
+
+    public void setRecommendProductCollection(Collection<RecommendProduct> recommendProductCollection) {
+        this.recommendProductCollection = recommendProductCollection;
     }
 
     @Override

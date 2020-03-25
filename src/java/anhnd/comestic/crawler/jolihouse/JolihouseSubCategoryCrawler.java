@@ -8,7 +8,9 @@ package anhnd.comestic.crawler.jolihouse;
 import anhnd.comestic.crawler.BaseCrawler;
 import anhnd.comestic.crawler.BaseThread;
 import anhnd.comestic.dao.CategoryDAO;
+import anhnd.comestic.dao.SubCategoryDAO;
 import anhnd.comestic.entity.Category;
+import anhnd.comestic.entity.SubCategory;
 import anhnd.comestic.utils.ElementChecker;
 import anhnd.comestic.utils.TextUtils;
 import anhnd.comestic.utils.XMLChecker;
@@ -100,7 +102,9 @@ public class JolihouseSubCategoryCrawler extends BaseCrawler implements Runnable
             Map<String, String> data = new HashMap<>(); 
             data = stAXParserForSubCategories(document);
             for (Map.Entry<String, String> entry : data.entrySet()) {
-                Thread thread = new Thread(new JolihousePageCrawler(entry.getKey(), entry.getValue(), servletContext));
+                SubCategoryDAO subCategoryDAO = new SubCategoryDAO();
+                SubCategory subCategory = subCategoryDAO.getAndInsertIfNewSubCategory(entry.getValue(), category);
+                Thread thread = new Thread(new JolihousePageCrawler(entry.getKey(), subCategory, servletContext));
                 thread.start();
             }
             synchronized (BaseThread.getInstance()) {

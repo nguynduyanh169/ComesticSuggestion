@@ -55,7 +55,21 @@ public class BaseDAO<T> implements IGenericDAO<T> {
 
     @Override
     public List<T> getAll(String namedQuery) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = DBUtils.getEntityManager();
+        try {
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            List<T> result = em.createNamedQuery(namedQuery, anonymousClass).getResultList();
+            transaction.commit();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return null;
     }
 
 }

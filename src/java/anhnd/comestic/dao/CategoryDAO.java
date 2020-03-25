@@ -54,4 +54,23 @@ public class CategoryDAO extends BaseDAO<Category> {
         }
         return null;
     }
+    
+    public synchronized String getCategoryNameById(String categoryId) {
+        EntityManager em = DBUtils.getEntityManager();
+        try {
+            Category category = em.createNamedQuery("Category.findByCategoryId", Category.class)
+                    .setParameter("categoryId", categoryId)
+                    .getSingleResult();
+            if (category != null) {
+                return category.getCategoryName();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return null;
+    }
 }

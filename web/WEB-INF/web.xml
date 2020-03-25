@@ -4,9 +4,49 @@
         <servlet-name>CrawlServlet</servlet-name>
         <servlet-class>anhnd.comestic.servlet.CrawlServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SurveyServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.SurveyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DetailServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.DetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagingServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.PagingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CrawlServlet</servlet-name>
         <url-pattern>/CrawlServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SurveyServlet</servlet-name>
+        <url-pattern>/SurveyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailServlet</servlet-name>
+        <url-pattern>/DetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingServlet</servlet-name>
+        <url-pattern>/PagingServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -86,7 +86,7 @@ public class JolihouseModelCrawler extends BaseCrawler {
         String brand = "";
         String name = "";
         String category = "";
-        float price = 0;
+        double price = 0;
         String imageLink = "";
         String productLink = "";
         String origin = "";
@@ -140,9 +140,9 @@ public class JolihouseModelCrawler extends BaseCrawler {
         return name;
     }
 
-    private float getProductPrice(XMLEventReader eventReader) {
+    private double getProductPrice(XMLEventReader eventReader) {
         XMLEvent event = null;
-        float price = 0;
+        double price = 0;
         while (eventReader.hasNext()) {
             try {
                 event = (XMLEvent) eventReader.next();
@@ -156,7 +156,7 @@ public class JolihouseModelCrawler extends BaseCrawler {
                     XMLEvent value = (XMLEvent) eventReader.next();
                     String strPrice = value.asCharacters().getData();
                     strPrice = strPrice.replaceAll("[^0-9\\*]", "");
-                    price = Float.parseFloat(strPrice);
+                    price = Double.parseDouble(strPrice);
                     return price;
                 }
             }

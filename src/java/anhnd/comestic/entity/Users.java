@@ -6,14 +6,17 @@
 package anhnd.comestic.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,6 +44,8 @@ public class Users implements Serializable {
     private String password;
     @Column(name = "Email", length = 50)
     private String email;
+    @OneToMany(mappedBy = "userId")
+    private Collection<RecommendProduct> recommendProductCollection;
 
     public Users() {
     }
@@ -79,6 +84,15 @@ public class Users implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @XmlTransient
+    public Collection<RecommendProduct> getRecommendProductCollection() {
+        return recommendProductCollection;
+    }
+
+    public void setRecommendProductCollection(Collection<RecommendProduct> recommendProductCollection) {
+        this.recommendProductCollection = recommendProductCollection;
     }
 
     @Override
