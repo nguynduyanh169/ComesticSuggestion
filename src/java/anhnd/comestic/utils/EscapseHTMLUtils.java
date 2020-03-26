@@ -13,7 +13,7 @@ import java.util.Map;
  * @author anhnd
  */
 public class EscapseHTMLUtils {
-    
+
     private static final HashMap<String, String> htmlEncodeChars = new HashMap<>();
 
     static {
@@ -170,5 +170,5 @@ public class EscapseHTMLUtils {
         }
         return recursive(source, encodingTable);
     }
-    
+
 }

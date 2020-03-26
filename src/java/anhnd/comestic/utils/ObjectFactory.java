@@ -35,7 +35,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ModelItem }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "tblProduct")
+    @XmlElementDecl(namespace = "", name = "Product")
     public JAXBElement<Product> createTblProduct(Product value) {
         return new JAXBElement<Product>(_Product_QNAME, Product.class, null, value);
     }

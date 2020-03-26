@@ -7,6 +7,7 @@ package anhnd.comestic.servlet;
 
 import anhnd.comestic.dao.XmlDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import org.xml.sax.InputSource;
  *
  * @author anhnd
  */
-public class PagingServlet extends HttpServlet {
+public class SearchServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,33 +40,22 @@ public class PagingServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            int nextPage = 0;
-            String recommend = "";
-            String searchValue = "";
-            if (request.getParameter("action").equals("next")) {
-                nextPage = Integer.valueOf(request.getParameter("curPage")) + 6;
-            } else if (request.getParameter("action").equals("pre")) {
-                nextPage = Integer.valueOf(request.getParameter("curPage")) - 6;
-            }
-            searchValue = request.getParameter("search");
             HttpSession session = request.getSession();
             Document categoryDoc = (Document) session.getAttribute("CATEGORY");
-            String userid = (String) session.getAttribute("USERID");
+            String userId = (String) session.getAttribute("USERID");
+            String searchValue = request.getParameter("searchVal");
+            System.out.println("search " + searchValue);
             XmlDAO xmlDAO = new XmlDAO();
-            if (nextPage < 0) {
-                recommend = xmlDAO.getRecommendProduct(userid, searchValue, 0, 6);
-            } else {
-                recommend = xmlDAO.getRecommendProduct(userid, searchValue, nextPage, 6);
-            }
-            System.out.println(recommend);
+            String recommendProduct = xmlDAO.getRecommendProduct(userId, searchValue, 0, 6);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document recommendDoc = db.parse(new InputSource(new StringReader(recommend)));
-            session.setAttribute("CURRENTPOS", nextPage);
-            session.setAttribute("USERID", userid);
+            
+            Document recommendDoc = db.parse(new InputSource(new StringReader(recommendProduct)));
+            session.setAttribute("CURRENTPOS", 0);
+            session.setAttribute("USERID", userId);
             session.setAttribute("RECOMMEND", recommendDoc);
             session.setAttribute("CATEGORY", categoryDoc);
-            //request.getRequestDispatcher("home.jsp").forward(request, response);
+            session.setAttribute("SEARCHVALUE", searchValue);
             response.sendRedirect("home.jsp");
         } catch (Exception e) {
             Logger.getLogger(SurveyServlet.class.getName()).log(Level.SEVERE, null, e);

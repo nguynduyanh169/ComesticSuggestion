@@ -5,19 +5,10 @@
  */
 package anhnd.comestic.servlet;
 
-import anhnd.comestic.dao.CategoryDAO;
-import anhnd.comestic.dao.ProductDAO;
-import anhnd.comestic.dao.RecommendProductDAO;
-import anhnd.comestic.dao.SubCategoryDAO;
 import anhnd.comestic.dao.UserDAO;
-import anhnd.comestic.entity.Product;
-import anhnd.comestic.entity.SubCategory;
 import anhnd.comestic.entity.Users;
 import anhnd.comestic.utils.TextUtils;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

@@ -10,7 +10,6 @@ import anhnd.comestic.dao.UserDAO;
 import anhnd.comestic.dao.XmlDAO;
 import anhnd.comestic.entity.Users;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,23 +60,23 @@ public class LoginServlet extends HttpServlet {
                     String originList = xmlDAO.getAllOrigin();
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
-                    
+
                     Document categoryDoc = db.parse(new InputSource(new StringReader(categoryList)));
                     Document brandDoc = db.parse(new InputSource(new StringReader(brandList)));
                     Document originDoc = db.parse(new InputSource(new StringReader(originList)));
-                    
+
                     session.setAttribute("CATEGORY", categoryDoc);
                     session.setAttribute("BRAND", brandDoc);
                     session.setAttribute("ORIGIN", originDoc);
                     request.getRequestDispatcher(SURVEY_PAGE).forward(request, response);
                 } else {
                     XmlDAO xmlDAO = new XmlDAO();
-                    String recommendProduct = xmlDAO.getRecommendProduct(user.getUserId(), 0, 6);
+                    String recommendProduct = xmlDAO.getRecommendProduct(user.getUserId(), "", 0, 6);
                     String categoryList = xmlDAO.getAllCategory();
-                    
+
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
-                    
+
                     Document recommendDoc = db.parse(new InputSource(new StringReader(recommendProduct)));
                     Document categoryDoc = db.parse(new InputSource(new StringReader(categoryList)));
                     session.setAttribute("CURRENTPOS", 0);
@@ -85,6 +84,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("USERNAME", user.getFullname());
                     session.setAttribute("RECOMMEND", recommendDoc);
                     session.setAttribute("CATEGORY", categoryDoc);
+                    session.setAttribute("SEARCHVALUE", "");
                     request.getRequestDispatcher(SUCCESS).forward(request, response);
                 }
             }

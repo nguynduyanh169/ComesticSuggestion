@@ -6,10 +6,8 @@
 package anhnd.comestic.crawler.jolihouse;
 
 import anhnd.comestic.crawler.BaseCrawler;
-import anhnd.comestic.dao.CategoryDAO;
 import anhnd.comestic.dao.ProductDAO;
 import anhnd.comestic.dto.Model;
-import anhnd.comestic.entity.Category;
 import anhnd.comestic.entity.Product;
 import anhnd.comestic.entity.SubCategory;
 import anhnd.comestic.utils.TextUtils;
@@ -26,7 +24,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -59,9 +56,9 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
                     break;
                 }
                 if (isStart) {
-                    if(!line.trim().contains("<a  title=\"Bỏ thích\" class=\"button_wh_40 btn_35_h iWishAdded "
+                    if (!line.trim().contains("<a  title=\"Bỏ thích\" class=\"button_wh_40 btn_35_h iWishAdded "
                             + "iwishAddWrapper iWishHidden\" href=\"javascript:;\"") && !line.trim().contains("<a title=\"Yêu thích\" class=\"button_wh_40 btn_35_h iWishAdd"
-                                    + " iwishAddWrapper\" href=\"javascript:;\"")){
+                                    + " iwishAddWrapper\" href=\"javascript:;\"")) {
                         document += line.trim();
                     }
                 }
@@ -81,7 +78,7 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
                 String brand = TextUtils.validateBrand(model.getBrand());
                 Product product = new Product(TextUtils.getUUID(), model.getName(), model.getPrice(), model.getImageLink(), model.getProductLink(), model.getDetail(), origin, model.getVolume(), brand, subCategory);
                 ProductDAO productDAO = new ProductDAO();
-                Product result = productDAO.getAndInsertIfNewProduct(product);
+                productDAO.getAndInsertIfNewProduct(product);
             }
         } catch (IOException ex) {
             Logger.getLogger(JolihousePageCrawler.class.getName()).log(Level.SEVERE, null, ex);

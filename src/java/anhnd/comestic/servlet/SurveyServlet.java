@@ -5,7 +5,6 @@
  */
 package anhnd.comestic.servlet;
 
-import anhnd.comestic.dao.BaseDAO;
 import anhnd.comestic.dao.ProductDAO;
 import anhnd.comestic.dao.RecommendProductDAO;
 import anhnd.comestic.dao.UserDAO;
@@ -13,7 +12,6 @@ import anhnd.comestic.dao.XmlDAO;
 import anhnd.comestic.entity.Product;
 import anhnd.comestic.entity.Users;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,7 +57,7 @@ public class SurveyServlet extends HttpServlet {
             }
             XmlDAO xmlDAO = new XmlDAO();
             HttpSession session = request.getSession();
-            String recommendProduct = xmlDAO.getRecommendProduct(user.getUserId(), 0, 6);
+            String recommendProduct = xmlDAO.getRecommendProduct(user.getUserId(), "" , 0, 6);
             String categoryList = xmlDAO.getAllCategory();
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -72,6 +70,7 @@ public class SurveyServlet extends HttpServlet {
             session.setAttribute("USERNAME", user.getFullname());
             session.setAttribute("RECOMMEND", recommendDoc);
             session.setAttribute("CATEGORY", categoryDoc);
+            session.setAttribute("SEARCHVALUE", "");
             request.getRequestDispatcher("home.jsp").forward(request, response);
         } catch (Exception e) {
             Logger.getLogger(SurveyServlet.class.getName()).log(Level.SEVERE, null, e);

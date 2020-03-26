@@ -15,6 +15,7 @@ import javax.xml.stream.events.StartElement;
  * @author anhnd
  */
 public class ElementChecker {
+    
     public static boolean isElementWith(StartElement element, String elementName, 
             String attributeName, String attributeValue) {
         String name = element.getName().getLocalPart();

@@ -39,11 +39,11 @@
             <x:set var="listCategory" select="$categorydoc//category" />
             <div class="menu_nav">
                 <ul>
-                    <li><a href="#">All</a>
+                    <li><a href="EditSurveyServlet">Take your Survey Again</a>
                     </li>
                     <x:forEach var="category" select="$listCategory" varStatus="counter">
                         <li><a href="#"><x:out select="$category/categoryName"/></a></li>
-                        </x:forEach>
+                    </x:forEach>
                 </ul>
             </div>
         </div>
@@ -75,9 +75,9 @@
                     <div class="header_right d-flex flex-row align-items-center justify-content-start ml-auto">
                         <!-- Search -->
                         <div class="header_search">
-                            <form action="#" id="header_search_form">
-                                <input type="text" class="search_input" placeholder="Search Item" required="required">
-                                <button class="header_search_button"><img src="images/search.png" alt=""></button>
+                            <form action="SearchServlet" method="GET" id="header_search_form">
+                                <input type="text" name="searchVal" class="search_input" placeholder="Search by name" value="${sessionScope.SEARCHVALUE}">
+                                <button class="header_search_button" type="submit"><img src="images/search.png" alt=""></button>
                             </form>
                         </div>
                     </div>
@@ -118,10 +118,12 @@
                     <c:url var="nextLink" value="PagingServlet">
                         <c:param name="action" value="next"/>
                         <c:param name="curPage" value="${currentPage}"/>
+                        <c:param name="search" value="${sessionScope.SEARCH}"/>
                     </c:url>
                     <c:url var="preLink" value="PagingServlet">
                         <c:param name="action" value="pre"/>
                         <c:param name="curPage" value="${currentPage}"/>
+                        <c:param name="search" value="${sessionScope.SEARCH}"/>
                     </c:url>
                     <a href="${preLink}" class="previous">&laquo; Previous</a>
                     <a href="${nextLink}" class="next">Next &raquo;</a>

@@ -6,12 +6,9 @@
 package anhnd.comestic.servlet;
 
 import anhnd.comestic.dao.ProductDAO;
-import anhnd.comestic.dao.XmlDAO;
 import anhnd.comestic.entity.Product;
 import anhnd.comestic.utils.JAXBUtils;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -22,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /**
  *

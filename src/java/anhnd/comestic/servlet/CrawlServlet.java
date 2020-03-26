@@ -5,14 +5,9 @@
  */
 package anhnd.comestic.servlet;
 
-import anhnd.comestic.crawler.jolihouse.JolihouseThread;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
+import anhnd.comestic.crawler.mathoadaphan.MathoadaphanThread;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,9 +35,11 @@ public class CrawlServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             ServletContext context = getServletContext();
-            JolihouseThread thread = new JolihouseThread(context);
-            thread.start();
-
+//            JolihouseThread thread = new JolihouseThread(context);
+//            thread.start();
+            
+            MathoadaphanThread thread1 = new MathoadaphanThread(context);
+            thread1.start();
         } catch (Exception W) {
             W.printStackTrace();
         } finally {

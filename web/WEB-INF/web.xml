@@ -24,6 +24,18 @@
         <servlet-name>PagingServlet</servlet-name>
         <servlet-class>anhnd.comestic.servlet.PagingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListProductServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.ListProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditSurveyServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.EditSurveyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>anhnd.comestic.servlet.SearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CrawlServlet</servlet-name>
         <url-pattern>/CrawlServlet</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>PagingServlet</servlet-name>
         <url-pattern>/PagingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListProductServlet</servlet-name>
+        <url-pattern>/ListProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditSurveyServlet</servlet-name>
+        <url-pattern>/EditSurveyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/SearchServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

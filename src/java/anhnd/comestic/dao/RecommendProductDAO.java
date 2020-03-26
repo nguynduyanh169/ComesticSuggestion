@@ -7,13 +7,11 @@ package anhnd.comestic.dao;
 
 import anhnd.comestic.entity.Product;
 import anhnd.comestic.entity.RecommendProduct;
-import anhnd.comestic.entity.SubCategory;
 import anhnd.comestic.entity.Users;
 import anhnd.comestic.utils.DBUtils;
 import anhnd.comestic.utils.TextUtils;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 /**
  *

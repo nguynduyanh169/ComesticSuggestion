@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package anhnd.comestic.crawler.jolihouse;
+package anhnd.comestic.crawler.mathoadaphan;
 
 import anhnd.comestic.crawler.BaseThread;
 import java.util.Map;
@@ -16,11 +16,11 @@ import javax.servlet.ServletContext;
  *
  * @author anhnd
  */
-public class JolihouseThread extends BaseThread implements Runnable {
+public class MathoadaphanThread extends BaseThread implements Runnable {
 
     private ServletContext context;
 
-    public JolihouseThread(ServletContext context) {
+    public MathoadaphanThread(ServletContext context) {
         this.context = context;
     }
 
@@ -28,23 +28,23 @@ public class JolihouseThread extends BaseThread implements Runnable {
     public void run() {
         while (true) {
             try {
-                JolihouseCategoryCrawler categoryCrawler = new JolihouseCategoryCrawler(context);
-                Map<String, String> categories = categoryCrawler.getCategories("https://jolicosmetic.vn/");
+                MathoadaphanSubCategoryCrawler categoryCrawler = new MathoadaphanSubCategoryCrawler(context);
+                Map<String, String> categories = categoryCrawler.getSubcategory("https://mathoadaphan.com/");
+                categories.remove("https://mathoadaphan.com/danh-muc/cham-soc-da-mat/lam-sach-da-mat-cham-soc-da-mat/");
+                categories.remove("https://mathoadaphan.com/danh-muc/cham-soc-da-mat/mat-na-cham-soc-da-mat/");
                 for (Map.Entry<String, String> entry : categories.entrySet()) {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
-                    Thread subCategoryCrawler = new Thread(new JolihouseSubCategoryCrawler(context, entry.getKey(), entry.getValue()));
-                    subCategoryCrawler.start();
+                    Thread t = new Thread(new MathoadaphanPageCrawler(context, entry.getKey(), entry.getValue()));
+                    t.start();
                 }
-                JolihouseThread.sleep(TimeUnit.DAYS.toMillis(1));
+                MathoadaphanThread.sleep(TimeUnit.DAYS.toMillis(1));
                 synchronized (BaseThread.getInstance()) {
                     while (BaseThread.isSuspended()) {
                         BaseThread.getInstance().wait();
                     }
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(JolihouseThread.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MathoadaphanThread.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 

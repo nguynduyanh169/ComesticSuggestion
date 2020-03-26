@@ -14,6 +14,7 @@ import java.util.UUID;
  * @author anhnd
  */
 public class TextUtils {
+
     public static String refineHtml(String src) {
         src = removeMiscTags(src);
 
@@ -49,60 +50,84 @@ public class TextUtils {
         return listChar;
     }
 
-    public static double getMatchingPercentage(String string1, String string2) {
-        List<char[]> listChar1 = getListChar(string1);
-        List<char[]> listChar2 = getListChar(string2);
-        
-        List<char[]> copy = new ArrayList<>(listChar2);
-        int matches = 0;
-        for (int i = listChar1.size(); --i >= 0;) {
-            char[] listchar = listChar1.get(i);
-            for (int j = copy.size(); --j >= 0;) {
-                char[] toMatch = copy.get(j);
-                if (listchar[0] == toMatch[0] && listchar[1] == toMatch[1]) {
-                    copy.remove(j);
-                    matches += 2;
-                    break;
-                }
-            }
-        }
-        return (double) matches / (listChar1.size() + listChar2.size());
-    }
-    public static synchronized String getUUID(){
+    public static synchronized String getUUID() {
         return UUID.randomUUID().toString();
     }
-    
+
     public static String validateOrigin(String origin) {
         String result = "";
-        if(origin.contains("Anh")) {
+        if (origin.contains("Anh")) {
             result = "Anh Quốc";
         }
-        if(origin.contains("Bản") || origin.contains("Nhật")){
+        if (origin.contains("Bản") || origin.contains("Nhật")) {
             result = "Nhật Bản";
         }
-        if(origin.contains("Pháp") || origin.contains("Paris")){
+        if (origin.contains("Pháp") || origin.contains("Paris")) {
             result = "Pháp";
         }
-        if(origin.contains("Mĩ") || origin.contains("Mỹ") || origin.contains("U.S.A")){
+        if (origin.contains("Mĩ") || origin.contains("Mỹ") || origin.contains("U.S.A")) {
             result = "Mỹ";
         }
-        if(origin.contains("Hàn Quốc")){
+        if (origin.contains("Hàn Quốc")) {
             result = "Hàn Quốc";
         }
-        if(origin.contains("Thái Lan")){
+        if (origin.contains("Thái Lan")) {
             result = "Thái Lan";
         }
         return result;
     }
-    
-    public static String validateBrand(String brand){
+
+    public static String validateBrand(String brand) {
         String result = "";
-        if(brand.contains(":")){
+        if (brand.contains(":")) {
             result = brand.replace(":", "").trim();
-        }else{
+        } else {
             result = brand;
         }
         return result;
     }
-    
+
+    public static double similarity(String s1, String s2) {
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
+        }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 1.0;
+        }
+        return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
+
+    }
+
+    public static int editDistance(String s1, String s2) {
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0) {
+                    costs[j] = j;
+                } else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1)) {
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        }
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0) {
+                costs[s2.length()] = lastValue;
+            }
+        }
+        return costs[s2.length()];
+    }
+
 }
