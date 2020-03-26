@@ -44,7 +44,6 @@ public class SearchServlet extends HttpServlet {
             Document categoryDoc = (Document) session.getAttribute("CATEGORY");
             String userId = (String) session.getAttribute("USERID");
             String searchValue = request.getParameter("searchVal");
-            System.out.println("search " + searchValue);
             XmlDAO xmlDAO = new XmlDAO();
             String recommendProduct = xmlDAO.getRecommendProduct(userId, searchValue, 0, 6);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

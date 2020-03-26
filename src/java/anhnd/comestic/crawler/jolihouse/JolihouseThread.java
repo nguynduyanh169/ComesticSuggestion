@@ -31,7 +31,6 @@ public class JolihouseThread extends BaseThread implements Runnable {
                 JolihouseCategoryCrawler categoryCrawler = new JolihouseCategoryCrawler(context);
                 Map<String, String> categories = categoryCrawler.getCategories("https://jolicosmetic.vn/");
                 for (Map.Entry<String, String> entry : categories.entrySet()) {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
                     Thread subCategoryCrawler = new Thread(new JolihouseSubCategoryCrawler(context, entry.getKey(), entry.getValue()));
                     subCategoryCrawler.start();
                 }

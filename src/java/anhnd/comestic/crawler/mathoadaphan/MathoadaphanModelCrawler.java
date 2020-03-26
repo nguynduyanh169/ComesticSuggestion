@@ -66,7 +66,6 @@ public class MathoadaphanModelCrawler extends BaseCrawler {
         String origin = "";
         String volume = "";
         String validDoc = textUtils.refineHtml(document);
-
         imageLink = getProductImageLink(parseStringToXMLEventReader(validDoc));
         name = getProductName(parseStringToXMLEventReader(validDoc));
         price = getProductPrice(parseStringToXMLEventReader(validDoc));

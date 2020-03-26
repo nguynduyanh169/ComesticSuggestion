@@ -26,33 +26,8 @@
     <body>
 
         <!-- Menu -->
-
-        <div class="menu">
-
-            <!-- Search -->
-            <div class="menu_search">
-                <form action="#" id="menu_search_form" class="menu_search_form">
-                    <input type="text" class="search_input" placeholder="Search Item" required="required">
-                    <button class="menu_search_button"><img src="images/search.png" alt=""></button>
-                </form>
-            </div>
-            <!-- Navigation -->
-            <c:set var="categorydoc" value="${sessionScope.CATEGORY}"/>
-            <x:set var="listCategory" select="$categorydoc//category" />
-            <div class="menu_nav">
-                <ul>
-                    <li><a href="#">All</a></li>
-                        <x:forEach var="category" select="$listCategory" varStatus="counter">
-                        <li><a href="#"><x:out select="$category/categoryName"/></a></li>
-                        </x:forEach>
-                </ul>
-            </div>
-        </div>
-
         <div class="super_container">
-
             <!-- Header -->
-
             <header class="header">
                 <div class="header_overlay"></div>
                 <div class="header_content d-flex flex-row align-items-center justify-content-start">
@@ -64,7 +39,7 @@
                             </div>
                         </a>	
                     </div>
-                    <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                    <div class="hamburger"></div>
                     <nav class="main_nav">
                         <ul class="d-flex flex-row align-items-start justify-content-start">
                             <li><a href="#">Women</a></li>
@@ -95,13 +70,6 @@
                     <div class="home_container d-flex flex-column align-items-center justify-content-end">
                         <div class="home_content text-center">
                             <div class="home_title">Product Details</div>
-                            <div class="breadcrumbs d-flex flex-column align-items-center justify-content-center">
-                                <ul class="d-flex flex-row align-items-start justify-content-start text-center">
-                                    <li><a href="#">Home</a></li>
-                                    <li><a href="category.html">Woman</a></li>
-                                    <li>New Products</li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
