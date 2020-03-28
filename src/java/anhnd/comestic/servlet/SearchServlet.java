@@ -27,6 +27,7 @@ import org.xml.sax.InputSource;
  */
 public class SearchServlet extends HttpServlet {
 
+    private static final String HOME_PAGE = "home.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -55,7 +56,7 @@ public class SearchServlet extends HttpServlet {
             session.setAttribute("RECOMMEND", recommendDoc);
             session.setAttribute("CATEGORY", categoryDoc);
             session.setAttribute("SEARCHVALUE", searchValue);
-            response.sendRedirect("home.jsp");
+            response.sendRedirect(HOME_PAGE);
         } catch (Exception e) {
             Logger.getLogger(SurveyServlet.class.getName()).log(Level.SEVERE, null, e);
         }

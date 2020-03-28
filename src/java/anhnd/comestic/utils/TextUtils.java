@@ -39,17 +39,6 @@ public class TextUtils {
         return result;
     }
 
-    private static List<char[]> getListChar(String input) {
-        ArrayList<char[]> listChar = new ArrayList<>();
-        for (int i = 0; i < input.length() - 1; i++) {
-            char[] chars = new char[2];
-            chars[0] = input.charAt(i);
-            chars[1] = input.charAt(i + 1);
-            listChar.add(chars);
-        }
-        return listChar;
-    }
-
     public static synchronized String getUUID() {
         return UUID.randomUUID().toString();
     }

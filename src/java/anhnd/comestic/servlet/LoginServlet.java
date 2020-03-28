@@ -5,6 +5,7 @@
  */
 package anhnd.comestic.servlet;
 
+import anhnd.comestic.dao.ProductDAO;
 import anhnd.comestic.dao.RecommendProductDAO;
 import anhnd.comestic.dao.UserDAO;
 import anhnd.comestic.dao.XmlDAO;
@@ -31,6 +32,7 @@ public class LoginServlet extends HttpServlet {
 
     private static final String SUCCESS = "home.jsp";
     private static final String SURVEY_PAGE = "survey.jsp";
+    private static final String CRAWL_PAGE = "crawler.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,7 +51,11 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("password");
             Users user = UserDAO.getInstance().checkUser(email, password);
             HttpSession session = request.getSession();
-            if (user != null) {
+            int productCount = ProductDAO.getInstance().countAllProduct();
+            if(productCount == 0){
+                request.getRequestDispatcher(CRAWL_PAGE).forward(request, response);
+            }
+            else if (user != null) {
                 boolean check = RecommendProductDAO.getInstance().checkUserInRecommend(user.getUserId());
                 if (check == false) {
                     session.setAttribute("EMAIL", user.getEmail());

@@ -25,7 +25,7 @@ import org.xml.sax.InputSource;
  * @author anhnd
  */
 public class PagingServlet extends HttpServlet {
-
+    private static final String HOME_PAGE = "home.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,7 +57,6 @@ public class PagingServlet extends HttpServlet {
             } else {
                 recommend = xmlDAO.getRecommendProduct(userid, searchValue, nextPage, 6);
             }
-            System.out.println(recommend);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document recommendDoc = db.parse(new InputSource(new StringReader(recommend)));
@@ -66,7 +65,7 @@ public class PagingServlet extends HttpServlet {
             session.setAttribute("RECOMMEND", recommendDoc);
             session.setAttribute("CATEGORY", categoryDoc);
             //request.getRequestDispatcher("home.jsp").forward(request, response);
-            response.sendRedirect("home.jsp");
+            response.sendRedirect(HOME_PAGE);
         } catch (Exception e) {
             Logger.getLogger(SurveyServlet.class.getName()).log(Level.SEVERE, null, e);
         }

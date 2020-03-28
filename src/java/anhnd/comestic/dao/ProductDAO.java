@@ -73,12 +73,13 @@ public class ProductDAO extends BaseDAO<Product> {
     }
 
     public synchronized int countAllProduct() {
+        int count = 0;
         EntityManager em = DBUtils.getEntityManager();
         try {
-            List<Product> products = em.createNamedQuery("Product.findAllProduct", Product.class)
+            List<Product> products = em.createNamedQuery("Product.findAll", Product.class)
                     .getResultList();
             if (products != null && !products.isEmpty()) {
-                return products.size();
+                count = products.size();
             }
 
         } catch (Exception e) {
@@ -88,7 +89,7 @@ public class ProductDAO extends BaseDAO<Product> {
                 em.close();
             }
         }
-        return 0;
+        return count;
     }
 
 }

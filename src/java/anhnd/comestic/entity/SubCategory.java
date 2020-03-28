@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SubCategory.findAll", query = "SELECT s FROM SubCategory s")
     , @NamedQuery(name = "SubCategory.findBySubCategoryId", query = "SELECT s FROM SubCategory s WHERE s.subCategoryId = :subCategoryId")
     , @NamedQuery(name = "SubCategory.findBySubCategoryName", query = "SELECT s FROM SubCategory s WHERE s.subCategoryName = :subCategoryName")
-    , @NamedQuery(name = "SubCategory.findByCategoryId", query = "SELECT s FROM SubCategory s WHERE s.categoryId.categoryId = :categoryId")})
+    , @NamedQuery(name = "SubCategory.findByCategoryName", query = "SELECT s FROM SubCategory s WHERE s.categoryId.categoryName = :categoryName")})
 public class SubCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;

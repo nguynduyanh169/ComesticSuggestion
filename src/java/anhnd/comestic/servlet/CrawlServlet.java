@@ -38,6 +38,7 @@ public class CrawlServlet extends HttpServlet {
             ServletContext context = getServletContext();
             JolihouseThread thread = new JolihouseThread(context);
             thread.start();
+//            thread.join(60000);
             MathoadaphanThread thread1 = new MathoadaphanThread(context);
             thread1.start();
             response.sendRedirect("index.html");

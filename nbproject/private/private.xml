@@ -3,18 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/entity/Product.java</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/PagingServlet.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/dao/ProductDAO.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/home.jsp</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/index.html</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/RegisterServlet.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/mathoadaphan/MathoadaphanPageCrawler.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/entity/SubCategory.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/dao/SubCategoryDAO.java</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/survey.jsp</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/CrawlServlet.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/LoginServlet.java</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/crawler.html</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/register.html</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/detailproduct.jsp</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/web/index.html</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/LoginServlet.java</file>
             <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/SearchServlet.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/BaseCrawler.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/jolihouse/JolihouseThread.java</file>
-            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/crawler/mathoadaphan/MathoadaphanModelCrawler.java</file>
+            <file>file:/C:/Users/anhnd/Documents/XML/ComesticSuggestion/src/java/anhnd/comestic/servlet/SurveyServlet.java</file>
         </group>
     </open-files>
 </project-private>

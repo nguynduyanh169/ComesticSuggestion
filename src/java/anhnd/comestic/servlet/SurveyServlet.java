@@ -31,6 +31,7 @@ import org.xml.sax.InputSource;
  * @author anhnd
  */
 public class SurveyServlet extends HttpServlet {
+    private static final String HOME_PAGE = "home.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -71,7 +72,7 @@ public class SurveyServlet extends HttpServlet {
             session.setAttribute("RECOMMEND", recommendDoc);
             session.setAttribute("CATEGORY", categoryDoc);
             session.setAttribute("SEARCHVALUE", "");
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher(HOME_PAGE).forward(request, response);
         } catch (Exception e) {
             Logger.getLogger(SurveyServlet.class.getName()).log(Level.SEVERE, null, e);
 

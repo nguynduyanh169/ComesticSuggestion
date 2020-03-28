@@ -70,7 +70,7 @@ public class MathoadaphanPageCrawler extends BaseCrawler implements Runnable {
             document = document + "</ul></doc>";
             List<String> list = getProductHref(document);
             SubCategory subCategoryForProduct = null;
-            List<SubCategory> subCategoryList = SubCategoryDAO.getInstance().getSubCategoryByCategoryId("bfee5297-e8f6-489d-b7db-c7ef195da8c3");
+            List<SubCategory> subCategoryList = SubCategoryDAO.getInstance().getSubCategoryByCategoryName("Chăm Sóc Da");
             for (SubCategory subCategory : subCategoryList) {
                 if (TextUtils.similarity(subCategory.getSubCategoryName(), subCategoryName) >= 0.3) {
                     subCategoryForProduct = subCategory;

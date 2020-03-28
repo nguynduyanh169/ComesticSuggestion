@@ -71,16 +71,19 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Products -->
-
                 <div class="products">
                     <div class="container">
                     </div>
                     <div class="row products_row products_container grid">
                         <c:set var="recommenddoc" value="${sessionScope.RECOMMEND}"/>
+                        <c:if test="${not empty recommenddoc}">
                         <c:import url="WEB-INF/productList.xsl" var="xsldoc"/>
                         <x:transform xml="${recommenddoc}" xslt="${xsldoc}"/>
+                        </c:if>
+                        <c:if test="${empty recommenddoc}">
+                            No Record!
+                        </c:if>
 
                     </div>
                     <div class="row page_nav_row">

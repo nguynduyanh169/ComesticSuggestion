@@ -58,11 +58,11 @@ public class SubCategoryDAO extends BaseDAO<SubCategory>{
         return null;
     }
     
-    public synchronized List<SubCategory> getSubCategoryByCategoryId(String categoryId) {
+    public synchronized List<SubCategory> getSubCategoryByCategoryName(String categoryName) {
         EntityManager em = DBUtils.getEntityManager();
         try {
-            List<SubCategory> subCategories = em.createNamedQuery("SubCategory.findByCategoryId", SubCategory.class)
-                    .setParameter("categoryId", categoryId)
+            List<SubCategory> subCategories = em.createNamedQuery("SubCategory.findByCategoryName", SubCategory.class)
+                    .setParameter("categoryName", categoryName)
                     .getResultList();
             if (subCategories != null && !subCategories.isEmpty()) {
                 return subCategories;
