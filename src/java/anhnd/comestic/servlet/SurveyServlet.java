@@ -46,6 +46,7 @@ public class SurveyServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            String recommendProduct = "";
             String categoryId = request.getParameter("categorySurvey");
             String brand = request.getParameter("brandSurvey");
             String origin = request.getParameter("originSurvey");
@@ -58,7 +59,7 @@ public class SurveyServlet extends HttpServlet {
             }
             XmlDAO xmlDAO = new XmlDAO();
             HttpSession session = request.getSession();
-            String recommendProduct = xmlDAO.getRecommendProduct(user.getUserId(), "" , 0, 6);
+            recommendProduct = xmlDAO.getRecommendProduct(user.getUserId(), "" , 0, 6);
             String categoryList = xmlDAO.getAllCategory();
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
