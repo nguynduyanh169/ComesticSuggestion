@@ -97,7 +97,7 @@
                             <!-- Product Info -->
                             <div class="col-lg-6 product_col">
                                 <div class="product_info">
-                                    <div class="product_name"><x:out select="$element/productName"/></div>
+                                    <div class="product_name"><a href="<x:out select="$element/productLink"/>"><x:out select="$element/productName"/></a></div>
                                     <div class="product_category">Xuất xứ: <x:out select="$element/origin"/>, <x:out select="$element/brand"/></div>
                                     <div class="product_category">Số lượng: <x:out select='$element/volume'/></span></div>
                                     <div class="product_category">Giá: <x:out select='$element/price'/></span></div>

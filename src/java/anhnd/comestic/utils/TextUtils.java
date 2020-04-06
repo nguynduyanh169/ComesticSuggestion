@@ -17,10 +17,8 @@ public class TextUtils {
 
     public static String refineHtml(String src) {
         src = removeMiscTags(src);
-
         XMLChecker xmlSyntaxChecker = new XMLChecker();
         src = xmlSyntaxChecker.check(src);
-
         return src;
     }
 

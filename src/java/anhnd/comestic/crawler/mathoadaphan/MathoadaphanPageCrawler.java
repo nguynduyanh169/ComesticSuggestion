@@ -13,7 +13,6 @@ import anhnd.comestic.entity.Product;
 import anhnd.comestic.entity.SubCategory;
 import anhnd.comestic.utils.ElementChecker;
 import anhnd.comestic.utils.TextUtils;
-import anhnd.comestic.utils.XMLChecker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -94,8 +93,7 @@ public class MathoadaphanPageCrawler extends BaseCrawler implements Runnable {
     }
 
     private List<String> getProductHref(String document) throws UnsupportedEncodingException, XMLStreamException {
-        XMLChecker checker = new XMLChecker();
-        String validDoc = checker.check(document);
+        String validDoc = TextUtils.refineHtml(document);
         XMLEventReader eventReader = parseStringToXMLEventReader(validDoc);
         XMLEvent event = null;
         List<String> productHrefs = new ArrayList<String>();

@@ -99,12 +99,12 @@
                     <c:url var="nextLink" value="PagingServlet">
                         <c:param name="action" value="next"/>
                         <c:param name="curPage" value="${currentPage}"/>
-                        <c:param name="search" value="${sessionScope.SEARCH}"/>
+                        <c:param name="search" value="${sessionScope.SEARCHVALUE}"/>
                     </c:url>
                     <c:url var="preLink" value="PagingServlet">
                         <c:param name="action" value="pre"/>
                         <c:param name="curPage" value="${currentPage}"/>
-                        <c:param name="search" value="${sessionScope.SEARCH}"/>
+                        <c:param name="search" value="${sessionScope.SEARCHVALUE}"/>
                     </c:url>
                     <a href="${preLink}" class="previous">&laquo; Previous</a>
                     <a href="${nextLink}" class="next">Next &raquo;</a>

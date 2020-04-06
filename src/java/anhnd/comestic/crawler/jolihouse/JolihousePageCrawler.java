@@ -11,7 +11,6 @@ import anhnd.comestic.dto.Model;
 import anhnd.comestic.entity.Product;
 import anhnd.comestic.entity.SubCategory;
 import anhnd.comestic.utils.TextUtils;
-import anhnd.comestic.utils.XMLChecker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -89,8 +88,7 @@ public class JolihousePageCrawler extends BaseCrawler implements Runnable {
     }
 
     private Map<String, String> getProductHref(String document) throws UnsupportedEncodingException, XMLStreamException {
-        XMLChecker checker = new XMLChecker();
-        String validDoc = checker.check(document);
+        String validDoc = TextUtils.refineHtml(document);
         XMLEventReader eventReader = parseStringToXMLEventReader(validDoc);
         Map<String, String> productHrefs = new HashMap<>();
         while (eventReader.hasNext()) {
